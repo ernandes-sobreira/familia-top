@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Álbum da Viagem · Família</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#2b2620;
+  --ink-soft:#7a7268;
+  --paper:#ffffff;
+  --linha:#ece6dd;
+  --teal:#2e9e9b;
+  --teal-escuro:#1f7573;
+  --ambar:#f2b33d;
+  --coral:#e2574c;
+  --sombra:0 18px 40px rgba(43,38,32,.14);
+}
+html,body{height:100%;background:var(--paper);font-family:'Nunito',sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent;overflow-x:hidden;}
+
+/* ---------- Cabeçalho ---------- */
+header{max-width:920px;margin:0 auto;padding:26px 20px 6px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;}
+.brand h1{font-family:'Caveat',cursive;font-size:2.2rem;font-weight:700;line-height:1;color:var(--ink)}
+.brand p{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-top:4px;font-weight:700}
+.h-actions{display:flex;gap:8px;align-items:center}
+.btn{border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;border-radius:12px;transition:transform .15s, box-shadow .15s, background .2s;}
+.btn:active{transform:scale(.96)}
+.btn-add{background:var(--teal);color:#fff;padding:11px 18px;font-size:.85rem;box-shadow:0 6px 16px rgba(46,158,155,.35);}
+.btn-add:hover{background:var(--teal-escuro)}
+.btn-ghost{background:#fff;border:1.5px solid var(--linha);color:var(--ink-soft);padding:10px 14px;font-size:.8rem;}
+.btn-ghost:hover{border-color:var(--teal);color:var(--teal-escuro)}
+.btn-ghost.on{border-color:var(--teal);color:var(--teal-escuro);background:#eef8f7}
+.contador{font-size:.75rem;color:var(--ink-soft);font-weight:700;white-space:nowrap}
+
+/* ---------- Palco / carrossel ---------- */
+.stage{position:relative;max-width:1100px;margin:6px auto 0;height:56vh;min-height:380px;max-height:560px;perspective:1400px;touch-action:pan-y;user-select:none;}
+.card{position:absolute;top:50%;left:50%;width:min(340px,72vw);cursor:pointer;
+  background:#fff;padding:12px 12px 52px;border:1px solid var(--linha);border-radius:6px;
+  box-shadow:var(--sombra);transform-origin:center center;
+  transition:transform .45s cubic-bezier(.22,.9,.3,1), opacity .45s, filter .45s;
+  will-change:transform,opacity;}
+.card.dragging{transition:none}
+.card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#f4f0ea;border-radius:3px;pointer-events:none;}
+.card .fita{position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);width:92px;height:26px;background:var(--ambar);opacity:.85;border-radius:2px;box-shadow:0 2px 5px rgba(0,0,0,.12);}
+.card:nth-child(even) .fita{background:var(--teal);transform:translateX(-50%) rotate(2.5deg)}
+.card .legenda{position:absolute;left:0;right:0;bottom:10px;text-align:center;font-family:'Caveat',cursive;font-size:1.35rem;color:var(--ink);padding:0 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card .likes-mini{position:absolute;top:18px;right:18px;background:rgba(255,255,255,.92);border-radius:20px;padding:4px 10px;font-size:.72rem;font-weight:800;color:var(--coral);box-shadow:0 2px 8px rgba(0,0,0,.15);display:flex;align-items:center;gap:4px;}
+.nav{position:absolute;top:50%;transform:translateY(-50%);z-index:30;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--linha);background:rgba(255,255,255,.92);color:var(--teal-escuro);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(4px);}
+.nav:hover{border-color:var(--teal);background:#fff}
+#navL{left:12px}#navR{right:12px}
+
+/* ---------- Barra de ações da foto atual ---------- */
+.acao-bar{max-width:640px;margin:14px auto 0;padding:0 20px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.foto-info{text-align:center}
+.foto-info h2{font-family:'Caveat',cursive;font-size:1.7rem;line-height:1.1}
+.foto-info p{font-size:.8rem;color:var(--ink-soft);margin-top:2px}
+.reacoes{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{display:flex;align-items:center;gap:6px;padding:9px 15px;border-radius:24px;border:1.5px solid var(--linha);background:#fff;cursor:pointer;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:800;color:var(--ink-soft);transition:all .15s;}
+.chip:hover{border-color:var(--teal);transform:translateY(-2px)}
+.chip:active{transform:scale(.94)}
+.chip .n{font-size:.8rem}
+.chip.curtido{border-color:var(--coral);color:var(--coral);background:#fdf1f0}
+.chip-coment{background:var(--teal);border-color:var(--teal);color:#fff}
+.chip-coment:hover{background:var(--teal-escuro)}
+.chip.pop{animation:pop .35s ease}
+@keyframes pop{40%{transform:scale(1.25)}}
+
+.dots{display:flex;gap:5px;justify-content:center;margin:16px auto 30px;flex-wrap:wrap;max-width:70vw;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--linha);cursor:pointer;transition:all .3s;border:none;padding:0}
+.dot.on{width:20px;border-radius:4px;background:var(--teal)}
+
+/* ---------- Estados vazios ---------- */
+.estado{max-width:420px;margin:60px auto;text-align:center;padding:0 20px;}
+.estado .icone{font-size:3rem;margin-bottom:10px}
+.estado h2{font-family:'Caveat',cursive;font-size:2rem;margin-bottom:6px}
+.estado p{color:var(--ink-soft);font-size:.9rem;line-height:1.5;margin-bottom:18px}
+
+/* ---------- Modais ---------- */
+.overlay{position:fixed;inset:0;z-index:200;background:rgba(43,38,32,.55);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .25s;}
+.overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:#fff;border-radius:18px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;padding:24px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.3);}
+.modal-box h3{font-family:'Caveat',cursive;font-size:1.8rem;margin-bottom:14px}
+.fechar{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:none;background:#f4f0ea;color:var(--ink-soft);font-size:1rem;cursor:pointer;}
+.fechar:hover{background:#e9e2d8}
+label{display:block;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin:14px 0 5px;}
+input[type=text],textarea{width:100%;border:1.5px solid var(--linha);border-radius:10px;padding:11px 13px;font-family:'Nunito',sans-serif;font-size:.9rem;color:var(--ink);outline:none;background:#fff;resize:none;}
+input[type=text]:focus,textarea:focus{border-color:var(--teal)}
+.drop{border:2px dashed var(--linha);border-radius:14px;padding:26px 16px;text-align:center;cursor:pointer;transition:border-color .2s;color:var(--ink-soft);font-size:.85rem;font-weight:700;}
+.drop:hover,.drop.over{border-color:var(--teal);color:var(--teal-escuro)}
+.previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.previews img{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--linha)}
+.btn-salvar{width:100%;margin-top:20px;background:var(--teal);color:#fff;padding:14px;font-size:.95rem;box-shadow:0 6px 16px rgba(46,158,155,.35);}
+.btn-salvar:hover{background:var(--teal-escuro)}
+.btn-salvar:disabled{opacity:.55;cursor:wait}
+.aviso-envio{font-size:.78rem;color:var(--ink-soft);text-align:center;margin-top:10px}
+
+/* ---------- Visualizador ---------- */
+.viewer{position:fixed;inset:0;z-index:300;background:#fff;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .25s;}
+.viewer.open{opacity:1;pointer-events:all}
+.v-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--linha);gap:10px;flex-shrink:0;}
+.v-title{min-width:0;flex:1}
+.v-title h3{font-family:'Caveat',cursive;font-size:1.5rem;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v-title p{font-size:.72rem;color:var(--ink-soft)}
+.v-tools{display:flex;gap:6px;flex-shrink:0}
+.tool{width:38px;height:38px;border-radius:10px;border:1.5px solid var(--linha);background:#fff;color:var(--ink-soft);font-size:.95rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.tool:hover{border-color:var(--teal);color:var(--teal-escuro)}
+.v-img{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;background:#faf8f4;}
+.v-img img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;transition:transform .35s;cursor:zoom-in;}
+.v-img img.zoom{cursor:zoom-out}
+.v-comentarios{flex-shrink:0;border-top:1px solid var(--linha);max-height:38vh;display:flex;flex-direction:column;background:#fff;}
+.c-head{padding:10px 16px 4px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.c-head span{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--teal-escuro)}
+.c-count{color:var(--ink-soft)!important}
+.c-lista{flex:1;overflow-y:auto;padding:4px 16px;min-height:0}
+.c-item{padding:8px 0;border-bottom:1px solid #f4f0ea}
+.c-item:last-child{border-bottom:none}
+.c-autor{font-size:.78rem;font-weight:800;color:var(--teal-escuro)}
+.c-texto{font-size:.86rem;line-height:1.45;margin-top:2px}
+.c-data{font-size:.68rem;color:#b6aea3;margin-top:2px}
+.sem-coment{font-size:.85rem;color:var(--ink-soft);font-style:italic;text-align:center;padding:14px 0}
+.c-form{flex-shrink:0;display:flex;gap:8px;padding:10px 16px 14px;border-top:1px solid #f4f0ea;align-items:flex-end;}
+.c-form input{width:110px;flex-shrink:0}
+.c-form textarea{flex:1}
+.c-form .btn-env{background:var(--teal);color:#fff;padding:11px 16px;font-size:.85rem;flex-shrink:0;}
+
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:30px;font-size:.85rem;font-weight:700;z-index:500;transition:transform .3s;box-shadow:0 10px 30px rgba(0,0,0,.25);}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media (max-width:560px){
+  header{padding:18px 14px 4px;flex-wrap:wrap}
+  .brand h1{font-size:1.8rem}
+  .stage{height:50vh;min-height:330px}
+  .c-form{flex-wrap:wrap}
+  .c-form input{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  .card{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1 id="tituloAlbum">Álbum da Viagem</h1>
+    <p>Memórias da família · toque, curta, comente</p>
+  </div>
+  <div class="h-actions">
+    <span class="contador" id="contador"></span>
+    <button class="btn btn-ghost" id="btnAuto" title="Passar fotos automaticamente">▶ auto</button>
+    <button class="btn btn-add" id="btnAdd">+ Adicionar fotos</button>
+  </div>
+</header>
+
+<div class="stage" id="stage"></div>
+<button class="nav" id="navL" style="display:none">←</button>
+<button class="nav" id="navR" style="display:none">→</button>
+
+<div class="acao-bar" id="acaoBar" style="display:none">
+  <div class="foto-info">
+    <h2 id="infoTitulo"></h2>
+    <p id="infoMeta"></p>
+  </div>
+  <div class="reacoes">
+    <button class="chip" id="chipLike">❤️ <span class="n" id="nLike">0</span></button>
+    <button class="chip" data-r="riso">😂 <span class="n">0</span></button>
+    <button class="chip" data-r="uau">😮 <span class="n">0</span></button>
+    <button class="chip" data-r="festa">🎉 <span class="n">0</span></button>
+    <button class="chip chip-coment" id="chipComent">💬 Comentar <span class="n" id="nComent">0</span></button>
+  </div>
+</div>
+<div class="dots" id="dots"></div>
+
+<div class="estado" id="estadoVazio" style="display:none">
+  <div class="icone">📸</div>
+  <h2>O álbum está vazio</h2>
+  <p>Adicione as primeiras fotos da viagem. Todos da família que abrirem este link poderão curtir e deixar comentários.</p>
+  <button class="btn btn-add" onclick="abrirUpload()">+ Adicionar as primeiras fotos</button>
+</div>
+<div class="estado" id="estadoCarregando">
+  <div class="icone">🧳</div>
+  <h2>Abrindo o álbum...</h2>
+</div>
+
+<!-- Modal de upload -->
+<div class="overlay" id="ovUpload">
+  <div class="modal-box">
+    <button class="fechar" onclick="fecharUpload()">✕</button>
+    <h3>Adicionar fotos</h3>
+    <div class="drop" id="dropArea">
+      Toque para escolher fotos<br><small>ou arraste até aqui · pode selecionar várias</small>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </div>
+    <div class="previews" id="previews"></div>
+    <label for="upTitulo">Título (opcional)</label>
+    <input type="text" id="upTitulo" maxlength="60" placeholder="Ex: Pôr do sol na praia">
+    <label for="upDesc">Descrição (opcional)</label>
+    <input type="text" id="upDesc" maxlength="120" placeholder="Ex: Segundo dia da viagem">
+    <label for="upAutor">Quem está enviando</label>
+    <input type="text" id="upAutor" maxlength="30" placeholder="Seu nome">
+    <button class="btn btn-salvar" id="btnSalvar" onclick="enviarFotos()">Salvar no álbum</button>
+    <p class="aviso-envio" id="avisoEnvio"></p>
+  </div>
+</div>
+
+<!-- Visualizador com comentários -->
+<div class="viewer" id="viewer">
+  <div class="v-top">
+    <div class="v-tools">
+      <button class="tool" onclick="viewerNav(-1)" title="Anterior">←</button>
+      <button class="tool" onclick="viewerNav(1)" title="Próxima">→</button>
+    </div>
+    <div class="v-title"><h3 id="vTitulo"></h3><p id="vMeta"></p></div>
+    <div class="v-tools">
+      <button class="tool" onclick="girarImg()" title="Girar">↻</button>
+      <button class="tool" onclick="baixarImg()" title="Baixar">⬇</button>
+      <button class="tool" onclick="compartilhar()" title="Compartilhar">↗</button>
+      <button class="tool" onclick="excluirFoto()" title="Excluir foto">🗑</button>
+      <button class="tool" onclick="fecharViewer()" title="Fechar">✕</button>
+    </div>
+  </div>
+  <div class="v-img"><img id="vImg" src="" alt="" onclick="this.classList.toggle('zoom'); this.style.transform = this.classList.contains('zoom') ? 'scale(1.8) rotate('+imgRot+'deg)' : 'rotate('+imgRot+'deg)'"></div>
+  <div class="v-comentarios">
+    <div class="c-head">
+      <span>💬 Comentários</span>
+      <span class="c-count" id="cCount"></span>
+    </div>
+    <div class="c-lista" id="cLista"></div>
+    <div class="c-form">
+      <input type="text" id="cNome" maxlength="30" placeholder="Nome">
+      <textarea id="cTexto" rows="2" maxlength="300" placeholder="Escreva um comentário..."></textarea>
+      <button class="btn btn-env" onclick="enviarComentario()">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+/* ============================================================
+   CONFIGURAÇÃO
+   1. Crie um projeto em https://console.firebase.google.com
+   2. Ative o Firestore Database (modo de teste ou com regras)
+   3. Em Configurações do projeto > Seus apps > Web, copie a
+      configuração e cole abaixo, substituindo os valores.
+   ============================================================ */
+const firebaseConfig = {
+  apiKey: "COLE_SUA_API_KEY",
+  authDomain: "SEU_PROJETO.firebaseapp.com",
+  projectId: "SEU_PROJETO",
+  storageBucket: "SEU_PROJETO.appspot.com",
+  messagingSenderId: "000000000000",
+  appId: "COLE_SEU_APP_ID"
+};
+const CODIGO_EXCLUSAO = "familia"; // código pedido antes de excluir uma foto
+const NOME_ALBUM = "Álbum da Viagem"; // troque pelo nome da sua viagem
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const col = db.collection("fotos_viagem");
+document.getElementById('tituloAlbum').textContent = NOME_ALBUM;
+document.title = NOME_ALBUM;
+
+/* ---------- Estado ---------- */
+let fotos = [];        // [{id, titulo, descricao, autor, img, likes, reacoes, comentarios, criadoEm}]
+let cur = 0;
+let autoTimer = null;
+let imgRot = 0;
+let viewerAberto = false;
+let arquivosSelecionados = [];
+
+/* localStorage com proteção (curtidas e nome salvos por aparelho) */
+const store = {
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+};
+const curtidas = new Set((store.get('curtidas')||'').split(',').filter(Boolean));
+const reagidos = new Set((store.get('reagidos')||'').split(',').filter(Boolean));
+
+/* ---------- Firestore em tempo real ---------- */
+col.orderBy('criadoEm','asc').onSnapshot(snap => {
+  const idAtual = fotos[cur] ? fotos[cur].id : null;
+  fotos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  document.getElementById('estadoCarregando').style.display = 'none';
+  if (fotos.length === 0) {
+    document.getElementById('estadoVazio').style.display = 'block';
+    document.getElementById('acaoBar').style.display = 'none';
+    document.getElementById('navL').style.display = 'none';
+    document.getElementById('navR').style.display = 'none';
+    document.getElementById('stage').innerHTML = '';
+    document.getElementById('dots').innerHTML = '';
+    document.getElementById('contador').textContent = '';
+    return;
+  }
+  document.getElementById('estadoVazio').style.display = 'none';
+  document.getElementById('acaoBar').style.display = 'flex';
+  document.getElementById('navL').style.display = 'flex';
+  document.getElementById('navR').style.display = 'flex';
+  const novoIdx = idAtual ? fotos.findIndex(f => f.id === idAtual) : -1;
+  cur = novoIdx >= 0 ? novoIdx : Math.min(cur, fotos.length - 1);
+  montarCarrossel();
+  if (viewerAberto) atualizarViewer();
+}, err => {
+  document.getElementById('estadoCarregando').innerHTML =
+    '<div class="icone">⚠️</div><h2>Não foi possível conectar</h2><p>Verifique a configuração do Firebase no início do arquivo e as regras do Firestore.</p>';
+  console.error(err);
+});
+
+/* ---------- Carrossel ---------- */
+const stage = document.getElementById('stage');
+
+function montarCarrossel(){
+  stage.innerHTML = '';
+  fotos.forEach((f, i) => {
+    const c = document.createElement('div');
+    c.className = 'card';
+    c.dataset.i = i;
+    c.innerHTML = `
+      <div class="fita"></div>
+      <img src="${f.img}" alt="${esc(f.titulo||'Foto da viagem')}" draggable="false">
+      <div class="likes-mini">❤️ ${f.likes||0}</div>
+      <div class="legenda">${esc(f.titulo || 'Sem título')}</div>`;
+    c.addEventListener('click', () => {
+      if (Math.abs(dragDX) > 8) return;
+      if (i === cur) abrirViewer(); else irPara(i);
+    });
+    stage.appendChild(c);
+  });
+  montarDots();
+  posicionar();
+  atualizarBarra();
+}
+
+function posicionar(fracao = 0){
+  const cards = stage.children;
+  for (let k = 0; k < cards.length; k++){
+    const off = k - cur - fracao;
+    const abs = Math.abs(off);
+    const c = cards[k];
+    if (abs > 3.2){ c.style.opacity = 0; c.style.pointerEvents = 'none'; continue; }
+    c.style.pointerEvents = 'auto';
+    const x = off * 62;                       // deslocamento em %
+    const rot = Math.max(-45, Math.min(45, off * -28));
+    const scale = Math.max(.7, 1 - abs * .14);
+    const z = 100 - Math.round(abs * 10);
+    const incl = k % 2 === 0 ? -1.2 : 1.4;    // leve inclinação de polaroid
+    c.style.zIndex = z;
+    c.style.opacity = abs > 2.6 ? 0 : 1 - abs * .22;
+    c.style.filter = abs < .4 ? 'none' : 'saturate(.85)';
+    c.style.transform =
+      `translate(calc(-50% + ${x}%), -50%) rotateY(${rot}deg) rotate(${abs < .4 ? 0 : incl}deg) scale(${scale})`;
+  }
+}
+
+function irPara(i){
+  cur = Math.max(0, Math.min(fotos.length - 1, i));
+  posicionar();
+  atualizarDots();
+  atualizarBarra();
+}
+
+/* Arrastar com o dedo */
+let dragX = null, dragDX = 0;
+stage.addEventListener('pointerdown', e => {
+  dragX = e.clientX; dragDX = 0;
+  [...stage.children].forEach(c => c.classList.add('dragging'));
+});
+window.addEventListener('pointermove', e => {
+  if (dragX === null) return;
+  dragDX = e.clientX - dragX;
+  posicionar(-dragDX / (stage.clientWidth * .5));
+});
+window.addEventListener('pointerup', () => {
+  if (dragX === null) return;
+  [...stage.children].forEach(c => c.classList.remove('dragging'));
+  const limite = stage.clientWidth * .12;
+  if (dragDX < -limite) irPara(cur + 1);
+  else if (dragDX > limite) irPara(cur - 1);
+  else posicionar();
+  dragX = null;
+  setTimeout(() => dragDX = 0, 50);
+});
+
+document.getElementById('navL').onclick = () => irPara(cur - 1);
+document.getElementById('navR').onclick = () => irPara(cur + 1);
+document.addEventListener('keydown', e => {
+  if (document.getElementById('ovUpload').classList.contains('open')) return;
+  if (e.key === 'ArrowLeft'){ irPara(cur - 1); if (viewerAberto) atualizarViewer(); }
+  if (e.key === 'ArrowRight'){ irPara(cur + 1); if (viewerAberto) atualizarViewer(); }
+  if (e.key === 'Escape'){ fecharViewer(); fecharUpload(); }
+});
+
+/* ---------- Pontos e barra de informações ---------- */
+function montarDots(){
+  const d = document.getElementById('dots');
+  d.innerHTML = '';
+  fotos.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'dot' + (i === cur ? ' on' : '');
+    b.onclick = () => irPara(i);
+    d.appendChild(b);
+  });
+}
+function atualizarDots(){
+  [...document.getElementById('dots').children].forEach((b, i) =>
+    b.classList.toggle('on', i === cur));
+}
+function atualizarBarra(){
+  const f = fotos[cur];
+  if (!f) return;
+  document.getElementById('contador').textContent = `${cur + 1} / ${fotos.length}`;
+  document.getElementById('infoTitulo').textContent = f.titulo || 'Sem título';
+  const partes = [];
+  if (f.descricao) partes.push(f.descricao);
+  if (f.autor) partes.push('por ' + f.autor);
+  if (f.criadoEm && f.criadoEm.toDate) partes.push(f.criadoEm.toDate().toLocaleDateString('pt-BR'));
+  document.getElementById('infoMeta').textContent = partes.join(' · ');
+  const like = document.getElementById('chipLike');
+  document.getElementById('nLike').textContent = f.likes || 0;
+  like.classList.toggle('curtido', curtidas.has(f.id));
+  document.querySelectorAll('.chip[data-r]').forEach(ch => {
+    const r = ch.dataset.r;
+    ch.querySelector('.n').textContent = (f.reacoes && f.reacoes[r]) || 0;
+  });
+  document.getElementById('nComent').textContent = (f.comentarios || []).length;
+}
+
+/* ---------- Curtir e reagir ---------- */
+document.getElementById('chipLike').onclick = () => {
+  const f = fotos[cur]; if (!f) return;
+  const ja = curtidas.has(f.id);
+  const delta = ja ? -1 : 1;
+  if (ja) curtidas.delete(f.id); else curtidas.add(f.id);
+  store.set('curtidas', [...curtidas].join(','));
+  col.doc(f.id).update({ likes: firebase.firestore.FieldValue.increment(delta) });
+  f.likes = (f.likes || 0) + delta;
+  atualizarBarra();
+  const chip = document.getElementById('chipLike');
+  chip.classList.remove('pop'); void chip.offsetWidth; chip.classList.add('pop');
+};
+
+document.querySelectorAll('.chip[data-r]').forEach(ch => {
+  ch.onclick = () => {
+    const f = fotos[cur]; if (!f) return;
+    const r = ch.dataset.r;
+    const chave = f.id + ':' + r;
+    if (reagidos.has(chave)){ toast('Você já reagiu com esse emoji 🙂'); return; }
+    reagidos.add(chave);
+    store.set('reagidos', [...reagidos].join(','));
+    col.doc(f.id).update({ ['reacoes.' + r]: firebase.firestore.FieldValue.increment(1) });
+    if (!f.reacoes) f.reacoes = {};
+    f.reacoes[r] = (f.reacoes[r] || 0) + 1;
+    atualizarBarra();
+    ch.classList.remove('pop'); void ch.offsetWidth; ch.classList.add('pop');
+  };
+});
+
+document.getElementById('chipComent').onclick = abrirViewer;
+
+/* ---------- Auto ---------- */
+document.getElementById('btnAuto').onclick = function(){
+  if (autoTimer){ clearInterval(autoTimer); autoTimer = null; this.classList.remove('on'); this.textContent = '▶ auto'; }
+  else {
+    autoTimer = setInterval(() => irPara(cur + 1 >= fotos.length ? 0 : cur + 1), 3500);
+    this.classList.add('on'); this.textContent = '⏸ auto';
+  }
+};
+
+/* ---------- Upload ---------- */
+const fileInput = document.getElementById('fileInput');
+const dropArea = document.getElementById('dropArea');
+document.getElementById('btnAdd').onclick = abrirUpload;
+
+function abrirUpload(){
+  document.getElementById('ovUpload').classList.add('open');
+  const nome = store.get('nome'); if (nome) document.getElementById('upAutor').value = nome;
+}
+function fecharUpload(){
+  document.getElementById('ovUpload').classList.remove('open');
+  arquivosSelecionados = [];
+  document.getElementById('previews').innerHTML = '';
+  document.getElementById('avisoEnvio').textContent = '';
+  fileInput.value = '';
+}
+dropArea.onclick = () => fileInput.click();
+dropArea.ondragover = e => { e.preventDefault(); dropArea.classList.add('over'); };
+dropArea.ondragleave = () => dropArea.classList.remove('over');
+dropArea.ondrop = e => { e.preventDefault(); dropArea.classList.remove('over'); adicionarArquivos(e.dataTransfer.files); };
+fileInput.onchange = () => adicionarArquivos(fileInput.files);
+
+function adicionarArquivos(lista){
+  [...lista].forEach(f => { if (f.type.startsWith('image/')) arquivosSelecionados.push(f); });
+  const pv = document.getElementById('previews');
+  pv.innerHTML = '';
+  arquivosSelecionados.forEach(f => {
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(f);
+    pv.appendChild(img);
+  });
+}
+
+function comprimir(file){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 1400;
+      let w = img.width, h = img.height;
+      if (Math.max(w, h) > MAX){
+        const fator = MAX / Math.max(w, h);
+        w = Math.round(w * fator); h = Math.round(h * fator);
+      }
+      const cv = document.createElement('canvas');
+      cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(img, 0, 0, w, h);
+      let q = 0.82, data = cv.toDataURL('image/jpeg', q);
+      while (data.length > 850000 && q > 0.4){       // limite do documento Firestore
+        q -= 0.1;
+        data = cv.toDataURL('image/jpeg', q);
+      }
+      URL.revokeObjectURL(img.src);
+      resolve(data);
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+async function enviarFotos(){
+  if (arquivosSelecionados.length === 0){ toast('Escolha ao menos uma foto'); return; }
+  const btn = document.getElementById('btnSalvar');
+  const aviso = document.getElementById('avisoEnvio');
+  btn.disabled = true;
+  const titulo = document.getElementById('upTitulo').value.trim();
+  const desc = document.getElementById('upDesc').value.trim();
+  const autor = document.getElementById('upAutor').value.trim();
+  if (autor) store.set('nome', autor);
+  try {
+    for (let i = 0; i < arquivosSelecionados.length; i++){
+      aviso.textContent = `Enviando foto ${i + 1} de ${arquivosSelecionados.length}...`;
+      const data = await comprimir(arquivosSelecionados[i]);
+      const t = arquivosSelecionados.length > 1 && titulo
+        ? `${titulo} (${i + 1})` : titulo;
+      await col.add({
+        titulo: t, descricao: desc, autor: autor,
+        img: data, likes: 0,
+        reacoes: { riso: 0, uau: 0, festa: 0 },
+        comentarios: [],
+        criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+    toast(`${arquivosSelecionados.length} foto(s) adicionada(s) ao álbum 🎉`);
+    fecharUpload();
+  } catch (e){
+    console.error(e);
+    aviso.textContent = 'Erro ao enviar. Verifique a conexão e a configuração do Firebase.';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ---------- Visualizador ---------- */
+function abrirViewer(){
+  if (!fotos[cur]) return;
+  viewerAberto = true;
+  imgRot = 0;
+  document.getElementById('viewer').classList.add('open');
+  const nome = store.get('nome'); if (nome) document.getElementById('cNome').value = nome;
+  atualizarViewer();
+}
+function fecharViewer(){
+  viewerAberto = false;
+  document.getElementById('viewer').classList.remove('open');
+}
+function viewerNav(dir){
+  irPara(cur + dir);
+  imgRot = 0;
+  atualizarViewer();
+}
+function atualizarViewer(){
+  const f = fotos[cur]; if (!f) return;
+  const img = document.getElementById('vImg');
+  img.src = f.img;
+  img.classList.remove('zoom');
+  img.style.transform = 'rotate(0deg)';
+  document.getElementById('vTitulo').textContent = f.titulo || 'Sem título';
+  const partes = [];
+  if (f.autor) partes.push('por ' + f.autor);
+  if (f.criadoEm && f.criadoEm.toDate) partes.push(f.criadoEm.toDate().toLocaleDateString('pt-BR'));
+  document.getElementById('vMeta').textContent = partes.join(' · ');
+  renderComentarios(f);
+}
+function girarImg(){
+  imgRot = (imgRot + 90) % 360;
+  const img = document.getElementById('vImg');
+  img.classList.remove('zoom');
+  img.style.transform = `rotate(${imgRot}deg)`;
+}
+function baixarImg(){
+  const f = fotos[cur]; if (!f) return;
+  const a = document.createElement('a');
+  a.href = f.img;
+  a.download = (f.titulo || 'foto-viagem') + '.jpg';
+  a.click();
+}
+async function compartilhar(){
+  const f = fotos[cur]; if (!f) return;
+  try {
+    if (navigator.share){
+      await navigator.share({ title: f.titulo || NOME_ALBUM, text: 'Veja nosso álbum da viagem!', url: location.href });
+    } else {
+      await navigator.clipboard.writeText(location.href);
+      toast('Link do álbum copiado 📋');
+    }
+  } catch(e){}
+}
+async function excluirFoto(){
+  const f = fotos[cur]; if (!f) return;
+  const codigo = prompt('Para excluir esta foto, digite o código da família:');
+  if (codigo === null) return;
+  if (codigo !== CODIGO_EXCLUSAO){ toast('Código incorreto'); return; }
+  if (!confirm('Excluir esta foto do álbum? Essa ação não pode ser desfeita.')) return;
+  await col.doc(f.id).delete();
+  toast('Foto excluída');
+  fecharViewer();
+}
+
+/* ---------- Comentários ---------- */
+function renderComentarios(f){
+  const lista = document.getElementById('cLista');
+  const cm = f.comentarios || [];
+  document.getElementById('cCount').textContent = cm.length === 0 ? '' : cm.length + ' recado(s)';
+  if (cm.length === 0){
+    lista.innerHTML = '<p class="sem-coment">Seja o primeiro a comentar esta foto 💬</p>';
+    return;
+  }
+  lista.innerHTML = cm.map(c => `
+    <div class="c-item">
+      <div class="c-autor">${esc(c.nome)}</div>
+      <div class="c-texto">${esc(c.texto)}</div>
+      <div class="c-data">${esc(c.data || '')}</div>
+    </div>`).join('');
+  lista.scrollTop = lista.scrollHeight;
+}
+async function enviarComentario(){
+  const f = fotos[cur]; if (!f) return;
+  const nome = document.getElementById('cNome').value.trim() || 'Anônimo';
+  const texto = document.getElementById('cTexto').value.trim();
+  if (!texto) return;
+  store.set('nome', nome);
+  const agora = new Date();
+  const c = {
+    nome, texto,
+    data: agora.toLocaleDateString('pt-BR') + ' ' +
+          agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+  };
+  document.getElementById('cTexto').value = '';
+  await col.doc(f.id).update({
+    comentarios: firebase.firestore.FieldValue.arrayUnion(c)
+  });
+  if (!f.comentarios) f.comentarios = [];
+  f.comentarios.push(c);
+  renderComentarios(f);
+  atualizarBarra();
+}
+
+/* ---------- Utilidades ---------- */
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, m =>
+    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+}
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+window.addEventListener('resize', () => posicionar());
+</script>
+</body>
+</html>
