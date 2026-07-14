@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Família Top · Bressani</title>
+<title>Família Bühler Sobreira · Viagens da Galera</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -100,10 +100,13 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
 .cla-opt small{display:block;font-weight:700;color:var(--ink-soft);font-size:.66rem;margin-top:2px}
 .cla-opt.sel{color:#fff;border-color:transparent}
 .cla-opt.sel small{color:rgba(255,255,255,.85)}
-.cla-opt[data-c="Pilares"].sel{background:var(--ouro)}
-.cla-opt[data-c="Primaiada"].sel{background:var(--teal)}
-.cla-opt[data-c="Netaiada"].sel{background:var(--coral)}
-.cla-opt[data-c="Anexos"].sel{background:var(--roxo)}
+.cla-opt[data-c="Mom & Dad Rules"].sel{background:#b58900}
+.cla-opt[data-c="Criança Bacana"].sel{background:#2e9e9b}
+.cla-opt[data-c="Criança Chata"].sel{background:#e2574c}
+.cla-opt[data-c="Zumbizado"].sel{background:#5f7a4a}
+.cla-opt[data-c="Paparazzo"].sel{background:#7b5ea7}
+.cla-opt[data-c="Sempre Atrasado"].sel{background:#c47a2b}
+.clas{grid-template-columns:1fr 1fr}
 
 /* ---------- Visualizador ---------- */
 .viewer{position:fixed;inset:0;z-index:300;background:#fff;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .25s;}
@@ -155,6 +158,13 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
 .btn-pub:hover{background:#c9483e}
 
 /* ---------- Ranking ---------- */
+/* ---------- Votação ---------- */
+.chip-voto{border-color:#cfe3d0!important;background:#f2faf3!important;}
+.chip-voto.votado{background:#2e7d32!important;border-color:#2e7d32!important;color:#fff!important;}
+.chip-pior{border-color:#e6d9c4!important;background:#fdf8ef!important;}
+.chip-pior.votado-pior{background:#8a6d3b!important;border-color:#8a6d3b!important;color:#fff!important;}
+.chip.fechado{opacity:.5;}
+.prazo{font-size:.7rem;font-weight:800;color:#2e7d32;background:#f2faf3;border:1.5px solid #cfe3d0;border-radius:999px;padding:4px 9px;white-space:nowrap;}
 .rank-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f4f0ea;cursor:pointer;}
 .rank-item:last-child{border-bottom:none}
 .rank-item img{width:58px;height:58px;object-fit:cover;border-radius:8px;border:1px solid var(--linha)}
@@ -167,6 +177,39 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
 /* ---------- Efeitos ---------- */
 #fxCanvas{position:fixed;inset:0;z-index:900;pointer-events:none;display:none;}
 .floater{position:fixed;bottom:-50px;z-index:890;font-size:2rem;pointer-events:none;animation:subir var(--dur) ease-out forwards;opacity:0;}
+
+/* ---- Efeitos animados sobre a foto ---- */
+.v-efeito{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:5;border-radius:6px;}
+.v-efeito.ef-dente{background:radial-gradient(circle at 50% 55%, rgba(120,160,50,.20), transparent 62%);}
+.v-efeito.ef-fogo{background:linear-gradient(to top, rgba(200,70,10,.28), transparent 45%);}
+.v-efeito.ef-chuva{background:linear-gradient(to bottom, rgba(40,70,110,.14), transparent 40%);}
+.pingo{position:absolute;top:-8%;font-size:1rem;opacity:.85;animation-name:cai-pingo;animation-timing-function:linear;animation-iteration-count:infinite;}
+@keyframes cai-pingo{from{transform:translateY(-12%)}to{transform:translateY(120vh)}}
+.chama{position:absolute;bottom:-8px;font-size:2.5rem;transform-origin:bottom center;animation:treme-chama .5s ease-in-out infinite alternate;}
+@keyframes treme-chama{from{transform:translateY(8px) scaleY(.9) rotate(-5deg)}to{transform:translateY(-12px) scaleY(1.18) rotate(5deg)}}
+.andariga{position:absolute;font-size:2.7rem;left:-18%;filter:drop-shadow(0 4px 4px rgba(0,0,0,.25));}
+.andariga.cao{bottom:6%;animation:atravessa 3.1s linear infinite;}
+.andariga.gato{bottom:4%;font-size:2.4rem;animation:atravessa 6s linear infinite;}
+@keyframes atravessa{0%{left:-18%}100%{left:114%}}
+.latido{position:absolute;bottom:19%;left:8%;font-family:'Caveat',cursive;font-weight:700;font-size:2rem;color:#c0392b;text-shadow:1px 1px 0 #fff,-1px -1px 0 #fff;animation:late .55s ease-in-out infinite;}
+@keyframes late{0%,100%{transform:scale(.8) rotate(-4deg);opacity:.45}50%{transform:scale(1.25) rotate(4deg);opacity:1}}
+.coroa-cai{position:absolute;top:-16%;left:50%;font-size:3.1rem;animation:cai-coroa 2.3s cubic-bezier(.5,.05,.9,.3) infinite;}
+@keyframes cai-coroa{0%{top:-16%;transform:translateX(-50%) rotate(-8deg)}52%{top:60%;transform:translateX(-50%) rotate(210deg)}66%{top:47%}80%{top:58%}100%{top:58%;transform:translateX(-50%) rotate(360deg)}}
+.dente-balanca{position:absolute;top:42%;left:50%;font-size:3.2rem;transform-origin:top center;filter:sepia(.7) hue-rotate(35deg) saturate(1.5) brightness(.9);animation:balanca-dente 1.1s ease-in-out infinite;}
+@keyframes balanca-dente{0%,100%{transform:translateX(-50%) rotate(-12deg)}50%{transform:translateX(-50%) rotate(12deg)}}
+.mosca{position:absolute;top:40%;left:50%;font-size:1.05rem;animation:zune 1.6s linear infinite;}
+@keyframes zune{0%{transform:translate(-42px,-8px)}25%{transform:translate(32px,12px)}50%{transform:translate(-18px,26px)}75%{transform:translate(38px,-18px)}100%{transform:translate(-42px,-8px)}}
+
+/* ---- Painel de efeitos ---- */
+.efeito-panel{position:absolute;top:64px;right:14px;z-index:12;background:#fff;border:2px solid #efe7db;border-radius:16px;box-shadow:0 14px 34px rgba(43,38,32,.22);padding:14px;width:min(280px,86vw);opacity:0;transform:translateY(-8px) scale(.97);pointer-events:none;transition:opacity .18s,transform .18s;}
+.efeito-panel.open{opacity:1;transform:none;pointer-events:all;}
+.ef-titulo{display:block;font-size:.82rem;font-weight:800;color:#8a7e6d;margin-bottom:10px;text-align:center;}
+.ef-grade{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.ef-grade button{font-family:inherit;font-size:.82rem;font-weight:700;color:#4a4136;background:#faf6ef;border:1.5px solid #ece2d3;border-radius:11px;padding:9px 6px;cursor:pointer;transition:background .15s,transform .12s;}
+.ef-grade button:hover{background:#f2eadc;transform:translateY(-1px);}
+.ef-grade button:active{transform:scale(.95);}
+.ef-limpar{width:100%;margin-top:10px;font-family:inherit;font-size:.82rem;font-weight:700;color:#c0392b;background:#fdeeee;border:1.5px solid #f4d3d0;border-radius:11px;padding:9px;cursor:pointer;}
+.selo-efeito{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.92);border-radius:999px;padding:2px 8px;font-size:.95rem;box-shadow:0 2px 6px rgba(0,0,0,.15);}
 @keyframes subir{
   0%{transform:translateY(0) translateX(0) rotate(0deg) scale(.6);opacity:0}
   12%{opacity:1}
@@ -190,14 +233,15 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
 
 <header>
   <div class="brand">
-    <h1>Família <span>Top</span> 👑</h1>
-    <p>Clã Bressani · pilares Maria Elza &amp; Hedi</p>
+    <h1>Família <span>Bühler Sobreira</span> ✈️</h1>
+    <p>Viagens da galera · o álbum da tribo</p>
   </div>
   <div class="h-actions">
     <button class="chip-user" id="chipUser" title="Trocar quem sou eu">👤 <b id="userNome">quem é você?</b></button>
     <span class="contador" id="contador"></span>
     <button class="btn btn-ghost" id="btnSorte" title="Foto aleatória">🎲</button>
-    <button class="btn btn-ghost" id="btnRank" title="Top da zueira">🏆</button>
+    <button class="btn btn-ghost" id="btnRank" title="Votação e troféus">🏆</button>
+    <span class="prazo" id="prazoVot"></span>
     <button class="btn btn-ghost" id="btnAuto" title="Passar sozinho">▶</button>
     <button class="btn btn-add" id="btnAdd">+ Fotos</button>
   </div>
@@ -213,12 +257,19 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
     <p id="infoMeta"></p>
   </div>
   <div class="reacoes">
+    <button class="chip chip-voto" id="chipVoto" title="Votar como melhor foto da viagem">🗳️ <span class="n" id="nVoto">0</span></button>
+    <button class="chip chip-pior" id="chipPior" title="Troféu Pior Ângulo">📉 <span class="n" id="nPior">0</span></button>
     <button class="chip" id="chipLike">❤️ <span class="n" id="nLike">0</span></button>
     <button class="chip" data-r="riso">😂 <span class="n">0</span></button>
     <button class="chip" data-r="uau">😮 <span class="n">0</span></button>
     <button class="chip" data-r="festa">🎉 <span class="n">0</span></button>
     <button class="chip" data-r="coco" title="Reação ruim de propósito">💩 <span class="n">0</span></button>
     <button class="chip" data-r="palhaco" title="Palhaçada detectada">🤡 <span class="n">0</span></button>
+    <button class="chip" data-r="zumbi" title="Assustou">🧟 <span class="n">0</span></button>
+    <button class="chip" data-r="explode" title="Explodiu a cabeça">🤯 <span class="n">0</span></button>
+    <button class="chip" data-r="amei" title="Amei demais">😍 <span class="n">0</span></button>
+    <button class="chip" data-r="chorei" title="Chorei">😭 <span class="n">0</span></button>
+    <button class="chip" data-r="raiva" title="Fiquei bravo">😡 <span class="n">0</span></button>
     <button class="chip chip-coment" id="chipComent">💬 <span class="n" id="nComent">0</span></button>
   </div>
 </div>
@@ -227,7 +278,7 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
 <div class="estado" id="estadoVazio" style="display:none">
   <div class="icone">📸</div>
   <h2>O álbum está vazio</h2>
-  <p>Adicione as primeiras fotos da bagunça. Primaiada, netaiada e anexos vão poder curtir, comentar e zuar.</p>
+  <p>Adicione as primeiras fotos da viagem. A galera vai poder curtir, comentar, votar e zuar.</p>
   <button class="btn btn-add" onclick="abrirUpload()">+ Adicionar as primeiras fotos</button>
 </div>
 <div class="estado" id="estadoCarregando">
@@ -244,10 +295,12 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
     <input type="text" id="idNome" maxlength="30" placeholder="Ex: Ernandes">
     <label>Seu clã</label>
     <div class="clas" id="clasBox">
-      <button class="cla-opt" data-c="Pilares">👑 Pilares<small>Maria Elza &amp; Hedi</small></button>
-      <button class="cla-opt" data-c="Primaiada">😎 Primaiada<small>os primos e primas</small></button>
-      <button class="cla-opt" data-c="Netaiada">🍭 Netaiada<small>os netos e netas</small></button>
-      <button class="cla-opt" data-c="Anexos">📎 Anexos<small>genros, noras e agregados</small></button>
+      <button class="cla-opt" data-c="Mom &amp; Dad Rules">👑 Mom &amp; Dad Rules<small>quem paga a viagem manda</small></button>
+      <button class="cla-opt" data-c="Criança Bacana">😎 Criança Bacana<small>ajuda, topa tudo, não reclama</small></button>
+      <button class="cla-opt" data-c="Criança Chata">😖 Criança Chata<small>"tá longe ainda?" a cada 5 min</small></button>
+      <button class="cla-opt" data-c="Zumbizado">🧟 Zumbizado<small>não existe antes do café</small></button>
+      <button class="cla-opt" data-c="Paparazzo">📸 Paparazzo<small>fotografa até a placa da estrada</small></button>
+      <button class="cla-opt" data-c="Sempre Atrasado">🐌 Sempre Atrasado<small>a galera inteira esperando</small></button>
     </div>
     <button class="btn btn-salvar" onclick="salvarIdentidade()">Entrar na família 🎉</button>
   </div>
@@ -273,12 +326,18 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
   </div>
 </div>
 
-<!-- Ranking -->
+<!-- Ranking / Votação -->
 <div class="overlay" id="ovRank">
   <div class="modal-box">
     <button class="fechar" onclick="document.getElementById('ovRank').classList.remove('open')">✕</button>
-    <h3>🏆 Top da zueira</h3>
-    <p class="sub">As fotos mais curtidas da família até agora.</p>
+    <h3>🏆 Melhor foto da viagem</h3>
+    <p class="sub" id="rankStatus"></p>
+    <div id="rankVotos"></div>
+    <h3 style="margin-top:22px">📉 Troféu Pior Ângulo</h3>
+    <p class="sub">Categoria de zueira. Não conta na disputa principal.</p>
+    <div id="rankPior"></div>
+    <h3 style="margin-top:22px">❤️ Mais curtidas</h3>
+    <p class="sub">Placar livre, sem prazo.</p>
     <div id="rankLista"></div>
   </div>
 </div>
@@ -292,6 +351,7 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
     </div>
     <div class="v-title"><h3 id="vTitulo"></h3><p id="vMeta"></p></div>
     <div class="v-tools">
+      <button class="tool tool-efeito" onclick="toggleEfeitoPanel()" title="Jogar efeito animado">💥 Efeito</button>
       <button class="tool tool-zuar" onclick="abrirEditor()" title="Editar com adesivos">🎭 Zuar</button>
       <button class="tool" onclick="girarImg()" title="Girar">↻</button>
       <button class="tool" onclick="baixarImg()" title="Baixar">⬇</button>
@@ -300,7 +360,19 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
       <button class="tool" onclick="fecharViewer()" title="Fechar">✕</button>
     </div>
   </div>
-  <div class="v-img" id="vImgWrap"><img id="vImg" src="" alt=""></div>
+  <div class="v-img" id="vImgWrap"><img id="vImg" src="" alt=""><div class="v-efeito" id="vEfeito"></div></div>
+  <div class="efeito-panel" id="efeitoPanel">
+    <span class="ef-titulo">Zuar a foto com efeito animado</span>
+    <div class="ef-grade">
+      <button onclick="aplicarEfeito('dente')">🦷 Dente podre</button>
+      <button onclick="aplicarEfeito('cachorro')">🐕 Cachorro bravo</button>
+      <button onclick="aplicarEfeito('gato')">🐈 Gato passando</button>
+      <button onclick="aplicarEfeito('coroa')">👑 Coroa caindo</button>
+      <button onclick="aplicarEfeito('chuva')">🌧️ Chuva caindo</button>
+      <button onclick="aplicarEfeito('fogo')">🔥 Fogo queimando</button>
+    </div>
+    <button class="ef-limpar" onclick="aplicarEfeito(null)">✖ Tirar efeito</button>
+  </div>
   <div class="v-comentarios">
     <div class="c-head">
       <span>💬 Comentários</span>
@@ -344,8 +416,8 @@ input[type=text]:focus,textarea:focus{border-color:var(--teal)}
 /* ============================================================
    FIREBASE — projeto biolab-unemat (Realtime Database)
    Estrutura:
-     albumViagem/fotos/{id}      -> imagem + metadados
-     albumViagem/interacoes/{id} -> likes, reações, comentários
+     viagemBuhlerSobreira/fotos/{id}      -> imagem + metadados
+     viagemBuhlerSobreira/interacoes/{id} -> likes, reacoes, comentarios, votos, piorAngulo, efeito
    ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyCiHRozGb7oOabUdz-RtZvF7Uag0otYMOA",
@@ -356,16 +428,24 @@ const firebaseConfig = {
   messagingSenderId: "1044664862619",
   appId: "1:1044664862619:web:363f9c714f6aa179c2833e"
 };
-const CODIGO_EXCLUSAO = "bressani";
-const NOME_ALBUM = "Família Top · Bressani";
+const CODIGO_EXCLUSAO = "buhler";
+const NOME_ALBUM = "Família Bühler Sobreira · Viagens da Galera";
 
 firebase.initializeApp(firebaseConfig);
-const raiz = firebase.database().ref("albumViagem");
+const raiz = firebase.database().ref("viagemBuhlerSobreira");
 const refFotos = raiz.child("fotos");
 const refInter = raiz.child("interacoes");
 
-const CLA_COR = { Pilares:'#b58900', Primaiada:'#2e9e9b', Netaiada:'#e2574c', Anexos:'#7b5ea7' };
-const REACAO_EMOJI = { riso:'😂', uau:'😮', festa:'🎉', coco:'💩', palhaco:'🤡' };
+const CLA_COR = { 'Mom & Dad Rules':'#b58900', 'Criança Bacana':'#2e9e9b', 'Criança Chata':'#e2574c', 'Zumbizado':'#5f7a4a', 'Paparazzo':'#7b5ea7', 'Sempre Atrasado':'#c47a2b' };
+const REACAO_EMOJI = { riso:'😂', uau:'😮', festa:'🎉', coco:'💩', palhaco:'🤡', zumbi:'🧟', explode:'🤯', amei:'😍', chorei:'😭', raiva:'😡' };
+const EFEITOS = {
+  dente:    { emoji:'🦷', nome:'Dente podre' },
+  cachorro: { emoji:'🐕', nome:'Cachorro bravo' },
+  gato:     { emoji:'🐈', nome:'Gato passando' },
+  coroa:    { emoji:'👑', nome:'Coroa caindo' },
+  chuva:    { emoji:'🌧️', nome:'Chuva caindo' },
+  fogo:     { emoji:'🔥', nome:'Fogo queimando' }
+};
 
 /* ---------- Estado ---------- */
 let fotosMap = {}, interMap = {}, fotos = [];
@@ -379,9 +459,31 @@ const store = {
 const curtidas = new Set((store.get('curtidas')||'').split(',').filter(Boolean));
 const reagidos = new Set((store.get('reagidos')||'').split(',').filter(Boolean));
 
+/* ---------- Votação: melhor foto da viagem ---------- */
+const VOTACAO_INICIO = new Date(2026, 6, 13, 0, 0, 0);   // 13/07/2026
+const VOTACAO_FIM    = new Date(2026, 6, 27, 23, 59, 59); // 27/07/2026
+let meuVoto = store.get('meuVoto') || null;          // 1 voto, 1 foto
+let meuPior = store.get('meuPior') || null;          // 1 troféu Pior Ângulo
+
+function votacaoAberta(){
+  const a = Date.now();
+  return a >= VOTACAO_INICIO.getTime() && a <= VOTACAO_FIM.getTime();
+}
+function tempoRestante(){
+  const ms = VOTACAO_FIM.getTime() - Date.now();
+  if (ms <= 0) return 'encerrada';
+  const dias = Math.floor(ms / 86400000);
+  const horas = Math.floor((ms % 86400000) / 3600000);
+  if (dias > 0) return dias + 'd ' + horas + 'h';
+  const min = Math.floor((ms % 3600000) / 60000);
+  return horas + 'h ' + min + 'min';
+}
+
 /* ---------- Identidade (nome + clã) ---------- */
 let identidade = null;
 try { identidade = JSON.parse(store.get('identidade')); } catch(e){}
+/* clãs antigos (Pilares, Primaiada...) não existem mais: força escolher de novo */
+if (identidade && !CLA_COR[identidade.cla]) identidade = null;
 let claSel = identidade ? identidade.cla : null;
 
 function abrirIdentidade(){
@@ -448,7 +550,9 @@ function combinar(){
       ? Object.keys(inter.comentarios).sort().map(k => inter.comentarios[k])
       : [];
     return { id, ...fotosMap[id], likes: inter.likes || 0,
-             reacoes: inter.reacoes || {}, comentarios: cm };
+             reacoes: inter.reacoes || {}, efeito: inter.efeito || null,
+             votos: inter.votos || 0, piorAngulo: inter.piorAngulo || 0,
+             comentarios: cm };
   });
 }
 
@@ -483,7 +587,7 @@ function atualizarInteracoesUI(){
   if (f){
     const mini = document.querySelector('.card[data-i="' + cur + '"] .likes-mini');
     if (mini) mini.innerHTML = '❤️ ' + (f.likes || 0);
-    if (viewerAberto) renderComentarios(f);
+    if (viewerAberto){ renderComentarios(f); tocarEfeito(f.efeito || null); }
   }
 }
 
@@ -501,6 +605,7 @@ function montarCarrossel(){
       <div class="fita" style="background:${corFita}"></div>
       <img src="${f.img}" alt="${esc(f.titulo||'Foto da família')}" draggable="false">
       ${f.zuadaPor ? '<div class="selo-zuada">🎭 zuada</div>' : ''}
+      ${f.efeito && EFEITOS[f.efeito] ? '<div class="selo-efeito">'+EFEITOS[f.efeito].emoji+'</div>' : ''}
       <div class="likes-mini">❤️ ${f.likes||0}</div>
       <div class="legenda">${esc(f.titulo || 'Sem título')}</div>`;
     c.addEventListener('click', () => {
@@ -579,18 +684,92 @@ document.getElementById('btnSorte').onclick = () => {
   irPara(alvo);
   toast('🎲 Destino escolheu essa!');
 };
+/* ---------- Votação: melhor foto e pior ângulo ---------- */
+function votar(){
+  if (!identidade){ abrirIdentidade(); return; }
+  const f = fotos[cur]; if (!f) return;
+  if (!votacaoAberta()){
+    toast(Date.now() < VOTACAO_INICIO.getTime() ? 'A votação ainda não abriu.' : '🏁 Votação encerrada em 27/07.');
+    return;
+  }
+  if (meuVoto === f.id){
+    refInter.child(f.id + '/votos').transaction(v => Math.max(0, (v || 0) - 1));
+    meuVoto = null; store.set('meuVoto', '');
+    toast('Voto retirado. Você pode votar em outra.');
+  } else {
+    if (meuVoto){
+      const antiga = meuVoto;
+      refInter.child(antiga + '/votos').transaction(v => Math.max(0, (v || 0) - 1));
+    }
+    refInter.child(f.id + '/votos').transaction(v => (v || 0) + 1);
+    meuVoto = f.id; store.set('meuVoto', f.id);
+    toast(meuVoto ? '🗳️ Voto registrado! Você tem 1 voto, dá pra trocar até 27/07.' : '');
+    soltarFloaters('🗳️', 8);
+  }
+  atualizarBarra();
+}
+
+function votarPior(){
+  if (!identidade){ abrirIdentidade(); return; }
+  const f = fotos[cur]; if (!f) return;
+  if (!votacaoAberta()){ toast('🏁 Categoria encerrada em 27/07.'); return; }
+  if (meuPior === f.id){
+    refInter.child(f.id + '/piorAngulo').transaction(v => Math.max(0, (v || 0) - 1));
+    meuPior = null; store.set('meuPior', '');
+    toast('Tirou o troféu dessa foto.');
+  } else {
+    if (meuPior) refInter.child(meuPior + '/piorAngulo').transaction(v => Math.max(0, (v || 0) - 1));
+    refInter.child(f.id + '/piorAngulo').transaction(v => (v || 0) + 1);
+    meuPior = f.id; store.set('meuPior', f.id);
+    toast('📉 Indicou pro Pior Ângulo! Zueira registrada.');
+    soltarFloaters('📉', 6);
+  }
+  atualizarBarra();
+}
+
+document.getElementById('chipVoto').onclick = votar;
+document.getElementById('chipPior').onclick = votarPior;
+
+function atualizarPrazo(){
+  const el = document.getElementById('prazoVot'); if (!el) return;
+  if (Date.now() < VOTACAO_INICIO.getTime()){ el.textContent = '🗳️ abre 13/07'; return; }
+  el.textContent = votacaoAberta() ? '🗳️ ' + tempoRestante() : '🏁 encerrada';
+}
+atualizarPrazo();
+setInterval(atualizarPrazo, 60000);
+
+function linhaRank(f, pos, valor, emoji){
+  const idx = fotos.findIndex(x => x.id === f.id);
+  return `<div class="rank-item" onclick="irPara(${idx});document.getElementById('ovRank').classList.remove('open')">
+    <div class="rank-pos">${pos}</div>
+    <img src="${f.img}" alt="">
+    <div class="rank-info"><b>${esc(f.titulo||'Sem título')}</b><span>${esc(f.autor||'')}${f.cla ? ' · '+esc(f.cla) : ''}</span></div>
+    <div class="rank-likes">${emoji} ${valor}</div>
+  </div>`;
+}
+
 document.getElementById('btnRank').onclick = () => {
-  const top = [...fotos].sort((a,b) => (b.likes||0) - (a.likes||0)).slice(0,5);
   const medalhas = ['🥇','🥈','🥉','4º','5º'];
+  const st = document.getElementById('rankStatus');
+  if (Date.now() < VOTACAO_INICIO.getTime()) st.textContent = 'A votação abre em 13/07.';
+  else if (votacaoAberta()) st.textContent = 'Aberta até 27/07 · falta ' + tempoRestante() + ' · 1 voto por aparelho, dá pra trocar.';
+  else st.textContent = '🏁 Encerrada em 27/07. Resultado final abaixo.';
+
+  const comVoto = [...fotos].filter(f => (f.votos||0) > 0).sort((a,b) => (b.votos||0) - (a.votos||0)).slice(0,5);
+  document.getElementById('rankVotos').innerHTML = comVoto.length === 0
+    ? '<p class="sem-coment">Ninguém votou ainda. Abre uma foto e toca em 🗳️.</p>'
+    : comVoto.map((f,i) => linhaRank(f, medalhas[i], f.votos||0, '🗳️')).join('');
+
+  const piores = [...fotos].filter(f => (f.piorAngulo||0) > 0).sort((a,b) => (b.piorAngulo||0) - (a.piorAngulo||0)).slice(0,3);
+  document.getElementById('rankPior').innerHTML = piores.length === 0
+    ? '<p class="sem-coment">Nenhuma foto indicada. Ainda.</p>'
+    : piores.map((f,i) => linhaRank(f, ['🥇','🥈','🥉'][i], f.piorAngulo||0, '📉')).join('');
+
+  const top = [...fotos].sort((a,b) => (b.likes||0) - (a.likes||0)).slice(0,5);
   document.getElementById('rankLista').innerHTML = top.length === 0
     ? '<p class="sem-coment">Ainda não tem foto para ranquear.</p>'
-    : top.map((f,i) => `
-      <div class="rank-item" onclick="irPara(${fotos.findIndex(x=>x.id===f.id)});document.getElementById('ovRank').classList.remove('open')">
-        <div class="rank-pos">${medalhas[i]}</div>
-        <img src="${f.img}" alt="">
-        <div class="rank-info"><b>${esc(f.titulo||'Sem título')}</b><span>${esc(f.autor||'')}</span></div>
-        <div class="rank-likes">❤️ ${f.likes||0}</div>
-      </div>`).join('');
+    : top.map((f,i) => linhaRank(f, medalhas[i], f.likes||0, '❤️')).join('');
+
   document.getElementById('ovRank').classList.add('open');
 };
 
@@ -631,6 +810,14 @@ function atualizarBarra(){
   const like = document.getElementById('chipLike');
   document.getElementById('nLike').textContent = f.likes || 0;
   like.classList.toggle('curtido', curtidas.has(f.id));
+  const cv = document.getElementById('chipVoto');
+  document.getElementById('nVoto').textContent = f.votos || 0;
+  cv.classList.toggle('votado', meuVoto === f.id);
+  cv.classList.toggle('fechado', !votacaoAberta());
+  const cp = document.getElementById('chipPior');
+  document.getElementById('nPior').textContent = f.piorAngulo || 0;
+  cp.classList.toggle('votado-pior', meuPior === f.id);
+  cp.classList.toggle('fechado', !votacaoAberta());
   document.querySelectorAll('.chip[data-r]').forEach(ch => {
     const r = ch.dataset.r;
     ch.querySelector('.n').textContent = (f.reacoes && f.reacoes[r]) || 0;
@@ -754,7 +941,8 @@ function publicarFoto(dados){
       criadoEm: firebase.database.ServerValue.TIMESTAMP
     },
     ['interacoes/' + id]: {
-      likes: 0, reacoes: { riso: 0, uau: 0, festa: 0, coco: 0, palhaco: 0 }
+      likes: 0, votos: 0, piorAngulo: 0,
+      reacoes: { riso: 0, uau: 0, festa: 0, coco: 0, palhaco: 0, zumbi: 0, explode: 0, amei: 0, chorei: 0, raiva: 0 }
     }
   });
   const limite = new Promise((_, rej) =>
@@ -785,7 +973,7 @@ async function enviarFotos(){
     console.error('[FamiliaTop] falha no envio:', e);
     const cod = e.code || '';
     let humano = cod || e.message || String(e);
-    if (cod === 'PERMISSION_DENIED') humano = 'PERMISSION_DENIED: as regras do banco estao bloqueando a escrita. Precisa liberar albumViagem nas regras do biolab-unemat.';
+    if (cod === 'PERMISSION_DENIED') humano = 'PERMISSION_DENIED: as regras do banco estao bloqueando a escrita. Precisa liberar viagemBuhlerSobreira nas regras do biolab-unemat.';
     aviso.style.color = '#c0392b';
     aviso.style.fontWeight = '700';
     aviso.textContent = 'Nao enviou. ' + humano;
@@ -823,6 +1011,8 @@ function atualizarViewer(){
   if (f.zuadaPor) partes.push('🎭 ' + f.zuadaPor);
   const d = dataBR(f.criadoEm); if (d) partes.push(d);
   document.getElementById('vMeta').textContent = partes.join(' · ');
+  tocarEfeito(f.efeito || null);
+  document.getElementById('efeitoPanel').classList.remove('open');
   renderComentarios(f);
 }
 
@@ -868,7 +1058,7 @@ async function compartilhar(){
   const f = fotos[cur]; if (!f) return;
   try {
     if (navigator.share){
-      await navigator.share({ title: f.titulo || NOME_ALBUM, text: 'Olha o álbum da Família Top!', url: location.href });
+      await navigator.share({ title: f.titulo || NOME_ALBUM, text: 'Olha as viagens da Família Bühler Sobreira!', url: location.href });
     } else {
       await navigator.clipboard.writeText(location.href);
       toast('Link do álbum copiado 📋');
@@ -1125,6 +1315,79 @@ async function publicarZueira(){
 const fx = document.getElementById('fxCanvas');
 const fxCtx = fx.getContext('2d');
 let fxAnim = null;
+
+let efeitoAtual = 'INICIAL';
+function tocarEfeito(nome){
+  nome = nome || null;
+  const cam = document.getElementById('vEfeito');
+  if (!cam) return;
+  if (nome === efeitoAtual) return;
+  efeitoAtual = nome;
+  cam.innerHTML = '';
+  cam.className = 'v-efeito';
+  if (!nome || !EFEITOS[nome]) return;
+  cam.classList.add('ef-' + nome);
+  if (nome === 'chuva'){
+    for (let i = 0; i < 42; i++){
+      const d = document.createElement('span');
+      d.className = 'pingo'; d.textContent = '💧';
+      d.style.left = (Math.random() * 100) + '%';
+      d.style.animationDelay = (Math.random() * 1.3) + 's';
+      d.style.animationDuration = (0.6 + Math.random() * 0.5) + 's';
+      cam.appendChild(d);
+    }
+  } else if (nome === 'fogo'){
+    for (let i = 0; i < 15; i++){
+      const fl = document.createElement('span');
+      fl.className = 'chama'; fl.textContent = '🔥';
+      fl.style.left = (i * 6.8) + '%';
+      fl.style.animationDelay = (Math.random() * 0.7) + 's';
+      cam.appendChild(fl);
+    }
+  } else if (nome === 'cachorro'){
+    const c = document.createElement('span');
+    c.className = 'andariga cao'; c.textContent = '🐕';
+    cam.appendChild(c);
+    const au = document.createElement('span');
+    au.className = 'latido'; au.textContent = 'AU! AU!';
+    cam.appendChild(au);
+  } else if (nome === 'gato'){
+    const g = document.createElement('span');
+    g.className = 'andariga gato'; g.textContent = '🐈';
+    cam.appendChild(g);
+  } else if (nome === 'coroa'){
+    const k = document.createElement('span');
+    k.className = 'coroa-cai'; k.textContent = '👑';
+    cam.appendChild(k);
+  } else if (nome === 'dente'){
+    const t = document.createElement('span');
+    t.className = 'dente-balanca'; t.textContent = '🦷';
+    cam.appendChild(t);
+    for (let i = 0; i < 3; i++){
+      const m = document.createElement('span');
+      m.className = 'mosca'; m.textContent = '🪰';
+      m.style.animationDelay = (i * 0.45) + 's';
+      cam.appendChild(m);
+    }
+  }
+}
+
+function aplicarEfeito(nome){
+  if (!identidade){ abrirIdentidade(); return; }
+  const f = fotos[cur]; if (!f) return;
+  refInter.child(f.id + '/efeito').set(nome || null);
+  f.efeito = nome || null;
+  efeitoAtual = 'INICIAL';
+  tocarEfeito(nome || null);
+  document.getElementById('efeitoPanel').classList.remove('open');
+  if (nome && EFEITOS[nome]) toast('Zuou a foto com ' + EFEITOS[nome].emoji + ' ' + EFEITOS[nome].nome);
+  else toast('Efeito removido');
+}
+
+function toggleEfeitoPanel(){
+  if (!fotos[cur]) return;
+  document.getElementById('efeitoPanel').classList.toggle('open');
+}
 
 function soltarConfete(){
   fx.width = innerWidth; fx.height = innerHeight;
